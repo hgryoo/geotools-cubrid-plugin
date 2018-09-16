@@ -44,7 +44,12 @@ public class CUBRIDDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "cubrid",
             Collections.singletonMap(Parameter.LEVEL, "program"));
     /** Default port number for MYSQL */
-    public static final Param PORT = new Param("port", Integer.class, "Port", true, 8001);
+    public static final Param PORT = new Param("port", Integer.class, "Port", true, 33000);
+    
+    /** parameter for database schema */
+    public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
+    
+    public static final Param ALTHOSTS = new Param("althosts", String.class, "AltHosts", false);
     
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new CUBRIDDialectBasic(dataStore);
@@ -75,9 +80,8 @@ public class CUBRIDDataStoreFactory extends JDBCDataStoreFactory {
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(SCHEMA.key, SCHEMA);
         parameters.put(PORT.key, PORT);
-        
-        parameters.remove(SCHEMA.key);
     }
     
     @Override
@@ -86,4 +90,13 @@ public class CUBRIDDataStoreFactory extends JDBCDataStoreFactory {
     	
         return dataStore;
     }
+
+	@Override
+	protected String getJDBCUrl(Map params) throws IOException {
+        String host = (String) HOST.lookUp(params);
+        String db = (String) DATABASE.lookUp(params);
+        int port = (Integer) PORT.lookUp(params);
+        String schema = (String) SCHEMA.lookUp(params);
+        return "jdbc:CUBRID" + ":" + host + ":" + port + ":" + db + ":" + schema + "::";
+	}
 }
