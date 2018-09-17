@@ -50,10 +50,6 @@ public class CUBRIDDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
     
     public static final Param ALTHOSTS = new Param("althosts", String.class, "AltHosts", false);
-    
-    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-        return new CUBRIDDialectBasic(dataStore);
-    }
 
     public String getDisplayName() {
         return "CUBRID";
@@ -84,11 +80,16 @@ public class CUBRIDDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(PORT.key, PORT);
     }
     
+    
     @Override
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
             throws IOException {
     	
         return dataStore;
+    }
+    
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
+        return new CUBRIDDialectBasic(dataStore);
     }
 
 	@Override
