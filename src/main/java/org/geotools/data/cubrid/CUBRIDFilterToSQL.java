@@ -52,6 +52,10 @@ public class CUBRIDFilterToSQL extends FilterToSQL {
     protected FilterCapabilities createFilterCapabilities() {
         //MySQL does not actually implement all of the special functions
         FilterCapabilities caps = super.createFilterCapabilities();
+        
+        
+        /*
+         * Spatial filters are not supported yet in CUBRID.
         caps.addType(BBOX.class);
         caps.addType(Contains.class);
         //caps.addType(Crosses.class);
@@ -62,7 +66,7 @@ public class CUBRIDFilterToSQL extends FilterToSQL {
         caps.addType(Touches.class);
         caps.addType(Within.class);
         caps.addType(Beyond.class);
-
+        */
         
         return caps;
     }
